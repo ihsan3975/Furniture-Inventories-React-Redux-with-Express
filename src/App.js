@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// import React from "react";
+// import { BrowserRouter, Route } from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+// import Header from "./component/Header";
+// import ListProduct from "./components/ListProduct";
+// import AddProduct from "./components/AddProduct";
+// import Login from "./components/Login";
+// import EditProduct from "./components/EditProduct";
 
-export default App;
+// import axios from "axios";
+
+// function App() {
+//   axios.defaults.baseURL = "http://localhost:4000";
+//   return (
+//     <BrowserRouter>
+//       <Header />
+//       <Route path="/" exact component={ListProduct} />
+//       <Route path="/add" component={AddProduct} />
+//       <Route path="/login" component={Login} />
+//       <Route path="/edit/:id" component={EditProduct} />
+//     </BrowserRouter>
+//   );
+// }
+
+// export default App;
