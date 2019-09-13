@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import API from "../axios/Api";
 // import Header from "./Header";
+import {connect} from 'react-redux'
+import {addProduct} from '../publics/actions/products' 
+import {Spinner, Container} from 'react-bootstrap'
+import logo from '../img/defimg.svg'
 
 export class AddProduct extends Component {
   state = {
@@ -17,20 +21,23 @@ export class AddProduct extends Component {
   };
 
   handlerSubmit = async () => {
-    var JWTToken = localStorage.getItem("auth");
     window.event.preventDefault();
-    await API.post("/products/users", this.state, {
-      headers: { auth: `${JWTToken}` }
-    });
-    console.log(this.state);
+    await this.props.dispatch(addProduct(this.state))
     this.props.history.push("/products");
   };
 
   render() {
     return (
-      <div className="container">
-        <h2>Add Product</h2>
+      this.props.products.isLoading ? 
+      <Container>
+        <Spinner animation="border" style={{position:'absolute', left:'50%', top: '35%'}} />
+      </Container>
+      :
+      <div className="container" style={{textAlign:'center'}}>
+        <h2 style={{textAlign:'center', paddingLeft:'50px'}}>Login</h2>
+        <img id="logo" src={logo} ></img>
 
+        <br></br>
         <form onSubmit={this.handlerSubmit}>
           <table>
             <tbody>
@@ -125,4 +132,10 @@ export class AddProduct extends Component {
   }
 }
 
-export default AddProduct;
+const mapStateToProps = state => {
+  return{
+    products: state.products
+  }
+}
+
+export default connect (mapStateToProps)(AddProduct);

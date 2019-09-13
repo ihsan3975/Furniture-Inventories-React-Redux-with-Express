@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import API from "../axios/Api";
 // import axios from "axios";
+import logo from '../img/logout.svg'
 
 export class Logout extends Component {
   state = {
@@ -22,16 +23,18 @@ export class Logout extends Component {
     );
     console.log(this.state.token);
 
-    localStorage.setItem("auth", this.state.token);
+    localStorage.setItem("token", this.state.token);
     // console.log(token);
     this.props.history.push("/home");
   };
 
   render() {
     return (
-      <div className="container">
-        <h2>Logout</h2>
+      <div className="container" style={{textAlign:'center'}}>
+        <h2 style={{textAlign:'center', paddingLeft:'50px'}}>Are you Sure?</h2>
+        <img id="logo" src={logo} ></img>
 
+        <br></br>
         <form onSubmit={this.handlerSubmit}>
           <table>
             <tbody>
@@ -40,7 +43,7 @@ export class Logout extends Component {
                 <td>
                   <input
                     type="submit"
-                    value="Logout"
+                    value="Yes"
                     className="btn btn-warning"
                   />
                 </td>

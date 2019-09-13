@@ -1,30 +1,30 @@
 import React, { Component } from "react";
 import axios from "axios";
+import {connect} from 'react-redux'
 import CardProduct from "./CardProduct";
 import "../img/style.css";
+import {Spinner, Container} from 'react-bootstrap'
+import {getProductsAuth} from '../publics/actions/products'
 
 export class ListProduct extends Component {
   state = {
-    product: [],
+    products: [],
     sort: localStorage.getItem("sort") || "asc",
     limit: localStorage.getItem("limit") || 6,
     sortBy: localStorage.getItem("sortBy") || "id",
     page: localStorage.getItem("page") || 1,
-    key: localStorage.getItem("key") || "%%"
+    key: localStorage.getItem("key") || '%%'
   };
 
   componentDidMount = async () => {
     const { sort, sortBy, limit, page, key } = this.state;
-    await axios
-      .get(
-        `/products?sort=${sort}&sortBy=${sortBy}&limit=${limit}&page=${page}&key=%${key}%`
-      )
-      .then(response =>
+    await this.props.dispatch(getProductsAuth(sort, sortBy, limit, page, key))
+      // .then(response =>
         this.setState({
-          product: response.data.data
+          products: this.props.products.productList.data.data
         })
-      );
-    console.log(this.state);
+      // );
+    // console.log(this.state);
   };
 
   handlerChange = e => {
@@ -40,17 +40,23 @@ export class ListProduct extends Component {
   };
 
   render() {
-    const renderData = this.state.product.map(product => {
+    const renderData = this.state.products.map(product => {
       return (
         <CardProduct
           product={product}
           key={product.id}
           refresh={this.componentDidMount}
+          defimg={() => this.forceUpdate()}
         />
       );
     });
 
     return (
+      this.props.products.isLoading ? 
+      <Container>
+        <Spinner animation="border" style={{position:'absolute', left:'50%', top: '35%'}} />
+      </Container>
+      :
       <div className="container">
         <h2> </h2>
 
@@ -135,6 +141,7 @@ export class ListProduct extends Component {
                   type="text"
                   name="key"
                   value={this.state.key}
+                  placeholder='Search'
                   className="form-control"
                   onChange={this.handlerChange}
                 />
@@ -159,4 +166,9 @@ export class ListProduct extends Component {
   }
 }
 
-export default ListProduct;
+const mapStateToProps = state => {
+  return{
+    products: state.products
+  }
+}
+export default connect(mapStateToProps)(ListProduct);

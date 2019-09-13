@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 // import API from "../axios/Api";
+import {connect} from 'react-redux'
 import axios from "axios";
+import {editProduct, getProductById} from '../publics/actions/products'
+import {Spinner, Container} from 'react-bootstrap'
+// import {getProductById} from '../publics/'
 
 export class EditProduct extends Component {
   state = {
+    // products: [],
     name: "",
     description: "",
     image: "",
@@ -14,17 +19,28 @@ export class EditProduct extends Component {
 
   async componentDidMount() {
     const id = this.props.match.params.id;
-    await axios.get("/products/" + id).then(res =>
-      this.setState({
-        name: res.data.data[0]["name"],
-        description: res.data.data[0]["description"],
-        image: res.data.data[0]["image"],
-        id_category: res.data.data[0]["id_category"],
-        quantity: res.data.data[0]["quantity"],
-        date_added: res.data.data[0]["date_added"]
-      })
-    );
-    console.log(this.state);
+    await this.props.dispatch(getProductById(id))
+    this.setState({
+      name: this.props.products.productList.data.data[0].name,
+      description: this.props.products.productList.data.data[0].description,
+      image: this.props.products.productList.data.data[0].image,
+      id_category: this.props.products.productList.data.data[0].id_category,
+      quantity: this.props.products.productList.data.data[0].quantity,
+      date_added: this.props.products.productList.data.data[0].date_added
+    })
+    // await axios.get("/products/" + id).then(res =>
+    //   this.setState({
+    //     name: res.data.data[0]["name"],
+    //     description: res.data.data[0]["description"],
+    //     image: res.data.data[0]["image"],
+    //     id_category: res.data.data[0]["id_category"],
+    //     quantity: res.data.data[0]["quantity"],
+    //     date_added: res.data.data[0]["date_added"]
+    //   })
+    // );
+    // console.log(this.state.products[0]);
+    // console.log(this.props.products.productList.data.data[0])
+    // console.log(this.state.products.name)
   }
 
   handlerChange = e => {
@@ -32,20 +48,29 @@ export class EditProduct extends Component {
   };
 
   handlerSubmit = async () => {
-    var JWTToken = localStorage.getItem("auth");
+    // var JWTToken = localStorage.getItem("auth");
     const id = this.props.match.params.id;
     window.event.preventDefault();
-    await axios.put("/products/users/" + id, this.state, {
-      headers: { auth: `${JWTToken}` }
-    });
-    this.props.history.push("/products");
+    await this.props.dispatch(editProduct(id, this.state))
+    window.location.replace('/products')
+    // await axios.put("/products/users/" + id, this.state, {
+    //   headers: { auth: `${JWTToken}` }
+    // });
+    // this.props.history.push("/products");
   };
 
   render() {
     return (
-      <div className="container">
-        <h2>Edit Product</h2>
+      this.props.products.isLoading ? 
+      <Container>
+        <Spinner animation="border" style={{position:'absolute', left:'50%', top: '35%'}} />
+      </Container>
+      :
+      <div className="container" style={{textAlign:'center'}}>
+        <h2 style={{textAlign:'center', paddingLeft:'50px'}}>Edit Product</h2>
+        <img id="logo" src={this.state.image} ></img>
 
+        <br></br>
         <form onSubmit={this.handlerSubmit}>
           <table>
             <tbody>
@@ -61,6 +86,7 @@ export class EditProduct extends Component {
                   />
                 </td>
               </tr>
+              <br></br>
               <tr>
                 <td>Description</td>
                 <td>
@@ -78,6 +104,7 @@ export class EditProduct extends Component {
                   </select>
                 </td>
               </tr>
+              <br></br>
               <tr>
                 <td>Image</td>
                 <td>
@@ -90,6 +117,7 @@ export class EditProduct extends Component {
                   />
                 </td>
               </tr>
+              <br></br>
               <tr>
                 <td>Category</td>
                 <td>
@@ -107,6 +135,7 @@ export class EditProduct extends Component {
                   </select>
                 </td>
               </tr>
+              <br></br>
               <tr>
                 <td>Quantity</td>
                 <td>
@@ -119,6 +148,7 @@ export class EditProduct extends Component {
                   />
                 </td>
               </tr>
+              <br></br>
               <tr>
                 <td>Date Added</td>
                 <td>
@@ -131,6 +161,7 @@ export class EditProduct extends Component {
                   />
                 </td>
               </tr>
+              <br></br>
               <tr>
                 <td></td>
                 <td>
@@ -149,4 +180,10 @@ export class EditProduct extends Component {
   }
 }
 
-export default EditProduct;
+const mapStateToProps = state => {
+  return{
+    products: state.products
+  }
+}
+
+export default connect (mapStateToProps)(EditProduct);

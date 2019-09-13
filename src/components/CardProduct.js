@@ -6,8 +6,8 @@ import "../img/style.css";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-function CardProduct({ product, refresh }) {
-  var JWTToken = localStorage.getItem("auth");
+function CardProduct({ product , refresh, defimg}) {
+  var JWTToken = localStorage.getItem("token");
   async function deleteProduct() {
     window.event.preventDefault();
     await API.delete("/products/users/" + product.id, {
@@ -19,7 +19,7 @@ function CardProduct({ product, refresh }) {
   }
 
   async function addQuantity() {
-    var JWTToken = localStorage.getItem("auth");
+    var JWTToken = localStorage.getItem("token");
     window.event.preventDefault();
     await API.patch("/products/qty/add/1/" + product.id, {
       headers: { auth: `${JWTToken}` }
@@ -28,7 +28,7 @@ function CardProduct({ product, refresh }) {
   }
 
   async function reduceQuantity() {
-    var JWTToken = localStorage.getItem("auth");
+    var JWTToken = localStorage.getItem("token");
     window.event.preventDefault();
     await API.patch("/products/qty/reduce/1/" + product.id, {
       headers: { auth: `${JWTToken}` }
@@ -55,7 +55,10 @@ function CardProduct({ product, refresh }) {
 
   return (
     <div className="col-md-12 card" style={{ margin: 2 }}>
-      <img src={product.image} />
+      <img src={product.image} onError={() => {
+        product.image='https://cdn.dribbble.com/users/175710/screenshots/3628199/dribbble-setapp-cat-02.png';
+        defimg()
+      }} />
       <h3>{product.name}</h3>
       <small>Quantity: {product.quantity}</small>
       <p>Category: {product.category}</p>
