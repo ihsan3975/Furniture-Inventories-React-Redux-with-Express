@@ -11,7 +11,10 @@ import AddProduct from "./AddProduct";
 import Login from "./Login";
 import EditProduct from "./EditProduct";
 import Register from "./Register";
+import ListCategory from './CategoriesList'
 import NotFoundPage from './NotFoundPage'
+import EditCategory from './EditCategory'
+import AddCategory from './AddCategory'
 // import notFoundPage from './NotFoundPage'
 import Query from "./Query";
 
@@ -28,7 +31,10 @@ function App() {
     
       <Route exact path="/home" component={HomePage} />
       <Route exact path="/home" component={ListProductHome} />
-  
+
+      <Route exact path="/category" component={Header} />
+      <Route exact path="/category" exact component={ListCategory} />
+      
       <Route exact path="/products" component={Header} />
       <Route exact path="/products" exact component={ListProduct} />
 
@@ -46,6 +52,14 @@ function App() {
 
       <Route exact path="/edit/:id" component={Header} />
       <Route exact path="/edit/:id" component={EditProduct} />
+      
+      <Route exact path="/editcategory/:id" component={Header} />
+      <Route exact path="/editcategory/:id" component={EditCategory} />
+      
+      <Route exact path="/addcategory" component={Header} />
+      <Route exact path="/addcategory" component={AddCategory} />
+
+
       {/* <Route component = {NotFoundPage} /> */}
     </BrowserRouter>
   );

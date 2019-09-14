@@ -13,6 +13,11 @@ function Header() {
           </Link>
         </li>
         <li className="nav-item">
+          <Link to="/category" className="nav-link">
+            Categories
+          </Link>
+        </li>
+        <li className="nav-item">
           <Link to="/add" className="nav-link">
             Add Product
           </Link>

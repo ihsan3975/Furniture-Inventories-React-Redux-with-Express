@@ -142,8 +142,8 @@ export class ListProduct extends Component {
                 <input
                   type="text"
                   name="key"
-                  value={this.state.key}
-                  placeholder='Search'
+                  value={this.state.key == '%%'? '': this.state.key}
+                  placeholder= {this.state.key == `%%` || '' ? 'Search': 'Search'}
                   className="form-control"
                   onChange={this.handlerChange}
                 />

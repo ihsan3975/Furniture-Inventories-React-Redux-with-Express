@@ -16,7 +16,7 @@ const product = (state = initState, action) => {
                 isRejected:false,
                 isFulfilled:false
             }
-        case ' ':
+        case 'GET_PRODUCTS_REJECTED':
             return{
                 ...state,
                 isLoading:false,
